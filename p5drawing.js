@@ -20,15 +20,21 @@ function setup() {
   strokeWeight(2);
   stroke("#121212");
 
-  if (statecheck == 1) {
-    noFill();
-    state1();
-  } else {
-    fill("#121212");
-    state2();
-  }
+  drawState();
 }
 
+function drawState() {
+  if (statecheck === 1) {
+    noFill();
+    state1();
+  } else if (statecheck === 2) {
+    fill("#121212");
+    state2();
+  } else if (statecheck === 0) {
+    console.log("State not ready, trying again...");
+    setTimeout(drawState, 100); // try again after 100ms
+  }
+}
 
 function state1() {
       strokeWeight(5);

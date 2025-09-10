@@ -46,11 +46,11 @@ window.addEventListener("resize", setLeftWidth);
         document.getElementById("suburb-name").textContent = suburb;
 
         if (result.bin_colour == "yellow"){
-            document.body.style.backgroundColor = "#ffcc00"; // yellowish
+            document.body.style.backgroundColor = "#ffcc00";
             statecheck = 2;
         }
         if (result.bin_colour == "green"){
-            document.body.style.backgroundColor = "#468e56"; // yellowish
+            document.body.style.backgroundColor = "#468e56";
             statecheck = 1;
         }
 
