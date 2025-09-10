@@ -1,0 +1,9 @@
+
+  @import url("https://use.typekit.net/otz4gja.css");
+
+
+#bin_name {
+    display: block;
+    font-family: "podium-soft-variable", sans-serif;
+    font-variation-settings: "wdth" 100;
+}
