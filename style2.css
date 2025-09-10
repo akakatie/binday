@@ -123,18 +123,18 @@ h2, p, .footer_p {
 /* Mobile adjustments */
 @media (max-width: 600px) {
     body {
-        font-size: 1.5rem;
+        font-size: 3rem;
     }
 
     h1 {
-        font-size: 0.8rem;
+        font-size: 1.5rem;
     }
 
     h2, p, .footer_p {
-        font-size: 0.7rem;
+        font-size: 1rem;
     }
 
     .key_text {
-    font-size: 1.5rem;
+    font-size: 3rem;
 }
 }
