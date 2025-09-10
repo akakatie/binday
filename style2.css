@@ -142,5 +142,6 @@ h2, p, .footer_p {
 
     .key_text {
     font-size: .8rem;
+        color: yellow;
 }
 }
