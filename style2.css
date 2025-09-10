@@ -33,7 +33,7 @@ body {
 }
 
 #right {
-  flex: 1; /* takes remaining space */
+  flex: 1 1 auto;          /* allow to shrink/grow */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -95,4 +95,45 @@ a {
 /* Optional: hover effect */
 a:hover {
   font-style: oblique;
+}
+
+/* Base font sizes */
+body {
+    font-family: hoss-round, sans-serif;
+    font-weight: 300;
+    color: #121212;
+    font-size: 1rem; /* base size for paragraphs and headings */
+}
+
+h1 {
+    font-size: 1.1rem; /* headline remains larger */
+}
+
+h2, p, .footer_p {
+    font-size: .7rem; /* all same size */
+    font-weight: normal;
+}
+
+.key_text {
+    font-size: 1.5rem;
+    font-weight: 300;
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+    body {
+        font-size: 1.5rem;
+    }
+
+    h1 {
+        font-size: 0.8rem;
+    }
+
+    h2, p, .footer_p {
+        font-size: 0.7rem;
+    }
+
+    .key_text {
+    font-size: 1.5rem;
+}
 }
