@@ -89,6 +89,8 @@ footer{
     width: 80%;
     margin-left: 10%;
     padding-bottom: 6px;
+    margin-bottom: env(safe-area-inset-bottom);
+
 }
 
 .footer_p{

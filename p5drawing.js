@@ -6,6 +6,7 @@ function createSketch() {
     let x, y;
     let numCells;
     let canvasWidth, canvasHeight;
+    let gapOffset = 0; // left offset for centering
     const ideal = 50; // ideal cell size
     const min = 45, max = 55; // allowable range for sp
 
@@ -27,7 +28,6 @@ function createSketch() {
     };
 
     p.windowResized = function() {
-      // Update canvas size to match parent
       canvasWidth = leftDiv.offsetWidth;
       canvasHeight = leftDiv.offsetHeight;
       p.resizeCanvas(canvasWidth, canvasHeight);
@@ -37,22 +37,20 @@ function createSketch() {
     };
 
     function recalcGrid() {
-      // Calculate number of cells that fit
       numCells = Math.floor(canvasWidth / ideal);
-
-      // Adjust sp so cells approximately fill width
       sp = canvasWidth / numCells;
-
-      // Clamp to allowable range
       sp = Math.max(min, Math.min(max, sp));
 
-      // Reset starting coordinates
-      x = sp / 2;
+      // Calculate leftover gap and shift grid by half
+      const leftover = canvasWidth - sp * numCells;
+      gapOffset = leftover / 2;
+
+      x = gapOffset + sp / 2;
       y = sp / 2;
     }
 
     function drawState() {
-      p.clear(); // clear previous drawings
+      p.clear();
 
       if (statecheck === 1) {     
         p.noFill();
@@ -65,19 +63,22 @@ function createSketch() {
         setTimeout(drawState, 100);
       }
 
-      // Draw right stripe to fill gap
-      const gap = canvasWidth - sp * numCells;
-      if (gap > 0) {
+      // Draw stripes on left and right
+      const leftover = canvasWidth - sp * numCells;
+      if (leftover > 0) {
         p.noStroke();
         p.fill("#121212");
-        p.rect(canvasWidth - gap, 0, gap, canvasHeight);
+        // left stripe
+        p.rect(0, 0, leftover / 2, canvasHeight);
+        // right stripe
+        p.rect(canvasWidth - leftover / 2, 0, leftover / 2, canvasHeight);
       }
     }
 
     function state1() {
       p.strokeWeight(5);
       p.stroke("#121212");
-      x = sp / 2;
+      x = gapOffset + sp / 2;
       y = sp / 2;
 
       while (y < p.height) {
@@ -90,9 +91,9 @@ function createSketch() {
         }
 
         x += sp;
-        if (x > p.width) {
+        if (x > canvasWidth - gapOffset) {
           y += sp;
-          x = sp / 2;
+          x = gapOffset + sp / 2;
         }
       }
     }
@@ -109,8 +110,8 @@ function createSketch() {
     }
 
     function state2() {
-      for (let yy = 0; yy < p.height; yy += sp) {
-        for (let xx = 0; xx < p.width; xx += sp) {
+      for (let yy = 0; yy < canvasHeight; yy += sp) {
+        for (let xx = gapOffset; xx < canvasWidth - gapOffset; xx += sp) {
           let orientation = Math.floor(p.random(4));
           drawTriangleInCell(xx, yy, orientation);
         }
