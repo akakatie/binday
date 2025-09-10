@@ -1,44 +1,82 @@
 function createSketch() {
-  const sp = 50;
   const z = [-1, -1, +1, -1, +1, +1, -1, +1];
 
   new p5((p) => {
-    let x = sp / 2;
-    let y = sp / 2;
+    let sp; 
+    let x, y;
+    let numCells;
+    let canvasWidth, canvasHeight;
+    const ideal = 50; // ideal cell size
+    const min = 45, max = 55; // allowable range for sp
+
+    const leftDiv = document.getElementById("left");
 
     p.setup = function() {
-      const leftDiv = document.getElementById("left");
-      let w = Math.floor(leftDiv.offsetWidth / sp) * sp;
+      canvasWidth = leftDiv.offsetWidth;
+      canvasHeight = leftDiv.offsetHeight;
 
-      let cnv = p.createCanvas(w, leftDiv.offsetHeight);
+      let cnv = p.createCanvas(canvasWidth, canvasHeight);
       cnv.parent("left");
       cnv.id("p5Canvas");
 
       p.strokeWeight(2);
       p.stroke("#121212");
 
+      recalcGrid();
       drawState();
     };
 
+    p.windowResized = function() {
+      // Update canvas size to match parent
+      canvasWidth = leftDiv.offsetWidth;
+      canvasHeight = leftDiv.offsetHeight;
+      p.resizeCanvas(canvasWidth, canvasHeight);
+
+      recalcGrid();
+      drawState();
+    };
+
+    function recalcGrid() {
+      // Calculate number of cells that fit
+      numCells = Math.floor(canvasWidth / ideal);
+
+      // Adjust sp so cells approximately fill width
+      sp = canvasWidth / numCells;
+
+      // Clamp to allowable range
+      sp = Math.max(min, Math.min(max, sp));
+
+      // Reset starting coordinates
+      x = sp / 2;
+      y = sp / 2;
+    }
+
     function drawState() {
-      if (statecheck === 1) {     // check global statecheck dynamically
+      p.clear(); // clear previous drawings
+
+      if (statecheck === 1) {     
         p.noFill();
         state1();
       } else if (statecheck === 2) {
         p.fill("#121212");
         state2();
       } else {
-        // retry until statecheck is set
         console.log("State not ready, retrying...");
         setTimeout(drawState, 100);
+      }
+
+      // Draw right stripe to fill gap
+      const gap = canvasWidth - sp * numCells;
+      if (gap > 0) {
+        p.noStroke();
+        p.fill("#121212");
+        p.rect(canvasWidth - gap, 0, gap, canvasHeight);
       }
     }
 
     function state1() {
       p.strokeWeight(5);
       p.stroke("#121212");
-
-      // reset coordinates in case we call it again
       x = sp / 2;
       y = sp / 2;
 
