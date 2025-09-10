@@ -4,7 +4,7 @@ let statecheck = 0;
 
 function setLeftWidth() {
   const leftDiv = document.getElementById("left");
-  const windowWidth = document.documentElement.clientWidth; // more reliable on mobile
+const windowWidth = leftDiv.parentElement.offsetWidth; // get actual container width
 
   // decide fraction based on screen width
   let fraction = windowWidth < 800 ? 1/3 : 1/2;
