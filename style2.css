@@ -62,8 +62,8 @@ h2{
 }
 
 #bin-card {
-    width: 40vw;
-    height: 40vh;
+    
+    min-height: 20vh;
     margin: auto;
     text-align: center;
       
