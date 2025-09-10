@@ -40,9 +40,10 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 0;            /* crucial for flex children to shrink on mobile */
+  min-height: 100px;            /* crucial for flex children to shrink on mobile */
   overflow-y: auto;         /* allow scrolling if content is taller than viewport */
-  padding: 10px;
+  padding: 0px;
+    width:50%;
 }
 
 
