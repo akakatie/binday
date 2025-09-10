@@ -18,7 +18,7 @@ const windowWidth = leftDiv.parentElement.offsetWidth; // get actual container w
 // call on load  setLeftWidth();
 
 // update on resize
-window.addEventListener("resize", setLeftWidth);
+//window.addEventListener("resize", setLeftWidth);
 
     async function fetchData() {
       const url = "https://www.data.act.gov.au/resource/jzzy-44un.json";
