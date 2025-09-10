@@ -90,7 +90,6 @@ footer{
     margin-left: 10%;
     padding-bottom: 6px;
     margin-bottom: env(safe-area-inset-bottom);
-
 }
 
 .footer_p{
@@ -148,4 +147,10 @@ h2, p, .footer_p {
     .key_text {
     font-size: .8rem;
 }
+footer{
+    padding-bottom: 20px;
 }
+
+}
+
+
