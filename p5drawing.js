@@ -1,22 +1,19 @@
 function createSketch() {
+  const sp = 50;
   const z = [-1, -1, +1, -1, +1, +1, -1, +1];
 
   new p5((p) => {
-    let sp; 
     let x, y;
-    let numCells;
-    let canvasWidth, canvasHeight;
-    let gapOffset = 0; // left offset for centering
-    const ideal = 50; // ideal cell size
-    const min = 45, max = 55; // allowable range for sp
-
+    let offsetX = 0; // starting x position
     const leftDiv = document.getElementById("left");
+
+    let canvasWidth, canvasHeight;
 
     p.setup = function() {
       canvasWidth = leftDiv.offsetWidth;
       canvasHeight = leftDiv.offsetHeight;
 
-      let cnv = p.createCanvas(canvasWidth, canvasHeight);
+      const cnv = p.createCanvas(canvasWidth, canvasHeight);
       cnv.parent("left");
       cnv.id("p5Canvas");
 
@@ -37,15 +34,13 @@ function createSketch() {
     };
 
     function recalcGrid() {
-      numCells = Math.floor(canvasWidth / ideal);
-      sp = canvasWidth / numCells;
-      sp = Math.max(min, Math.min(max, sp));
+      const numCells = Math.ceil(canvasWidth / sp); // round up to cover full width
+      const usedWidth = numCells * sp;
+      
+      // offset so right edge is flush
+      offsetX = canvasWidth - usedWidth;
 
-      // Calculate leftover gap and shift grid by half
-      const leftover = canvasWidth - sp * numCells;
-      gapOffset = leftover / 2;
-
-      x = gapOffset + sp / 2;
+      x = offsetX + sp / 2;
       y = sp / 2;
     }
 
@@ -62,26 +57,16 @@ function createSketch() {
         console.log("State not ready, retrying...");
         setTimeout(drawState, 100);
       }
-
-      // Draw stripes on left and right
-      const leftover = canvasWidth - sp * numCells;
-      if (leftover > 0) {
-        p.noStroke();
-        p.fill("#121212");
-        // left stripe
-        p.rect(0, 0, leftover / 2, canvasHeight);
-        // right stripe
-        p.rect(canvasWidth - leftover / 2, 0, leftover / 2, canvasHeight);
-      }
     }
 
     function state1() {
       p.strokeWeight(5);
       p.stroke("#121212");
-      x = gapOffset + sp / 2;
+
+      x = offsetX + sp / 2;
       y = sp / 2;
 
-      while (y < p.height) {
+      while (y < canvasHeight) {
         if (p.random(100) > 50) {
           arcDraw1(1, x, y);
           arcDraw1(3, x, y);
@@ -91,9 +76,9 @@ function createSketch() {
         }
 
         x += sp;
-        if (x > canvasWidth - gapOffset) {
+        if (x > canvasWidth) {
           y += sp;
-          x = gapOffset + sp / 2;
+          x = offsetX + sp / 2;
         }
       }
     }
@@ -111,7 +96,7 @@ function createSketch() {
 
     function state2() {
       for (let yy = 0; yy < canvasHeight; yy += sp) {
-        for (let xx = gapOffset; xx < canvasWidth - gapOffset; xx += sp) {
+        for (let xx = offsetX; xx < canvasWidth; xx += sp) {
           let orientation = Math.floor(p.random(4));
           drawTriangleInCell(xx, yy, orientation);
         }
