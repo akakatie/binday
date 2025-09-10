@@ -15,8 +15,7 @@ const windowWidth = leftDiv.parentElement.offsetWidth; // get actual container w
   leftDiv.style.width = `${targetWidth}px`;
 }
 
-// call on load
-setLeftWidth();
+// call on load  setLeftWidth();
 
 // update on resize
 window.addEventListener("resize", setLeftWidth);
