@@ -31,7 +31,7 @@ body {
 #left {
   height: 100%;
   flex-shrink: 0; /* don't shrink below width set in JS */
-    width: 40%;        /* always half the screen */
+    width: 50%;        /* always half the screen */
   
 }
 
@@ -126,20 +126,21 @@ h2, p, .footer_p {
 }
 
 /* Mobile adjustments */
-@media (max-width: 100px) {
+@media (max-width: 600px) {
     body {
-        font-size: 2rem;
+        font-size: 1.2rem;
     }
 
     h1 {
-        font-size: 1.5rem;
-    }
-
-    h2, p, .footer_p {
         font-size: 1rem;
     }
 
+    h2, p, .footer_p {
+        font-size: .7rem;
+        line-height: .8;
+    }
+
     .key_text {
-    font-size: 2rem;
+    font-size: 1.2rem;
 }
 }
