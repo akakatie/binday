@@ -1,98 +1,91 @@
-let sp = 50;
-let y = 0;
-let x = 0;
+function createSketch() {
+  const sp = 50;
+  const z = [-1, -1, +1, -1, +1, +1, -1, +1];
 
-z = [-1, -1, +1, -1, +1, +1, -1, +1];
+  new p5((p) => {
+    let x = sp / 2;
+    let y = sp / 2;
 
-function setup() {
-  const leftDiv = document.getElementById("left");
-  let w = floor(leftDiv.offsetWidth / sp) * sp;
+    p.setup = function() {
+      const leftDiv = document.getElementById("left");
+      let w = Math.floor(leftDiv.offsetWidth / sp) * sp;
 
-  // create canvas directly
-  let cnv = createCanvas(w, leftDiv.offsetHeight);
-  cnv.parent("left");
-    cnv.id("p5Canvas");               // give it an ID 
+      let cnv = p.createCanvas(w, leftDiv.offsetHeight);
+      cnv.parent("left");
+      cnv.id("p5Canvas");
 
-  clear();
-  x = sp / 2;
-  y = sp / 2;
+      p.strokeWeight(2);
+      p.stroke("#121212");
 
-  strokeWeight(2);
-  stroke("#121212");
+      drawState();
+    };
 
-  drawState();
-}
-
-function drawState() {
-  if (statecheck === 1) {
-    noFill();
-    state1();
-  } else if (statecheck === 2) {
-    fill("#121212");
-    state2();
-  } else if (statecheck === 0) {
-    console.log("State not ready, trying again...");
-    setTimeout(drawState, 100); // try again after 100ms
-  }
-}
-
-function state1() {
-      strokeWeight(5);
-  stroke("#121212");
-  while (y < height) {
-    if (random(100) > 50) {
-      arcDraw1(1, x, y, sp);
-      arcDraw1(3, x, y, sp);
-    } else {
-      arcDraw1(0, x, y, sp);
-      arcDraw1(2, x, y, sp);
+    function drawState() {
+      if (statecheck === 1) {     // check global statecheck dynamically
+        p.noFill();
+        state1();
+      } else if (statecheck === 2) {
+        p.fill("#121212");
+        state2();
+      } else {
+        // retry until statecheck is set
+        console.log("State not ready, retrying...");
+        setTimeout(drawState, 100);
+      }
     }
-    
-    x += sp;
-    
-    if (x > width) {
-      y += sp;
+
+    function state1() {
+      p.strokeWeight(5);
+      p.stroke("#121212");
+
+      // reset coordinates in case we call it again
       x = sp / 2;
+      y = sp / 2;
+
+      while (y < p.height) {
+        if (p.random(100) > 50) {
+          arcDraw1(1, x, y);
+          arcDraw1(3, x, y);
+        } else {
+          arcDraw1(0, x, y);
+          arcDraw1(2, x, y);
+        }
+
+        x += sp;
+        if (x > p.width) {
+          y += sp;
+          x = sp / 2;
+        }
+      }
     }
-  }
-}
 
-function arcDraw1(a, originX, originY, sp) {
-  arc(
-    originX + (z[2 * a] * sp) / 2,
-    originY + (z[2 * a + 1] * sp) / 2,
-    sp,
-    sp,
-    (a * TAU) / 4,
-    ((a + 1) * TAU) / 4
-  );
-}
-
-
-function state2() {
-  for (let y = 0; y < height; y += sp) {
-    for (let x = 0; x < width; x += sp) {
-      // pick random orientation 0,1,2,3
-      let orientation = floor(random(4));
-      drawTriangleInCell(x, y, sp, orientation);
+    function arcDraw1(a, originX, originY) {
+      p.arc(
+        originX + (z[2 * a] * sp) / 2,
+        originY + (z[2 * a + 1] * sp) / 2,
+        sp,
+        sp,
+        (a * p.TAU) / 4,
+        ((a + 1) * p.TAU) / 4
+      );
     }
-  }
-}
 
-// Draw one triangle in a square cell
-function drawTriangleInCell(x, y, sp, orientation) {
-  switch (orientation) {
-    case 0: // top-left
-      triangle(x, y, x + sp, y, x, y + sp);
-      break;
-    case 1: // top-right
-      triangle(x + sp, y, x + sp, y + sp, x, y);
-      break;
-    case 2: // bottom-left
-      triangle(x, y + sp, x + sp, y + sp, x, y);
-      break;
-    case 3: // bottom-right
-      triangle(x + sp, y + sp, x + sp, y, x, y + sp);
-      break;
-  }
+    function state2() {
+      for (let yy = 0; yy < p.height; yy += sp) {
+        for (let xx = 0; xx < p.width; xx += sp) {
+          let orientation = Math.floor(p.random(4));
+          drawTriangleInCell(xx, yy, orientation);
+        }
+      }
+    }
+
+    function drawTriangleInCell(xx, yy, orientation) {
+      switch (orientation) {
+        case 0: p.triangle(xx, yy, xx + sp, yy, xx, yy + sp); break;
+        case 1: p.triangle(xx + sp, yy, xx + sp, yy + sp, xx, yy); break;
+        case 2: p.triangle(xx, yy + sp, xx + sp, yy + sp, xx, yy); break;
+        case 3: p.triangle(xx + sp, yy + sp, xx + sp, yy, xx, yy + sp); break;
+      }
+    }
+  });
 }

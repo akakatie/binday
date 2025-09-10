@@ -4,7 +4,7 @@ let statecheck = 0;
 
 function setLeftWidth() {
   const leftDiv = document.getElementById("left");
-  const windowWidth = window.innerWidth;
+  const windowWidth = document.documentElement.clientWidth; // more reliable on mobile
 
   // decide fraction based on screen width
   let fraction = windowWidth < 800 ? 1/3 : 1/2;
@@ -53,6 +53,8 @@ window.addEventListener("resize", setLeftWidth);
             document.body.style.backgroundColor = "#468e56";
             statecheck = 1;
         }
+
+        createSketch();
 
       } catch (error) {
         console.error("Error fetching data:", error);
