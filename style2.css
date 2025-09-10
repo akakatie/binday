@@ -126,7 +126,7 @@ h2, p, .footer_p {
 }
 
 /* Mobile adjustments */
-@media (max-width: 800px) {
+@media (max-width: 100px) {
     body {
         font-size: 2rem;
     }
